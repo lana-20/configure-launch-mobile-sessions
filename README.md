@@ -2,6 +2,12 @@
 
 *The first step in any mobile app automated test is to create an Appium session. This is more or less the same as what we do with Selenium to create browser session, but there are some important differences.*
 
+## Table of Contents
+- [Requirements for an Appium Session](https://github.com/lana-20/configure-launch-mobile-sessions#requirements-for-an-appium-session)
+- [App Requirements](https://github.com/lana-20/configure-launch-mobile-sessions#app-requirements)
+- [Capabilities](https://github.com/lana-20/configure-launch-mobile-sessions#capabilities)
+- [Practical Example](https://github.com/lana-20/configure-launch-mobile-sessions#practical-example)
+
 ## Requirements for an Appium Session
 
 Requirements for an Appium Session |
