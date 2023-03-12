@@ -54,6 +54,8 @@ Now let's cover the capabilities required to start any Appium session!
 
 With the combination of these five capabilities, Appium will know how to start a session for you.
 
+## Practical Example
+
 Let's switch over for some hands-on experimentation with starting sessions. In my terminal, in our code project directory, I'm going to create a new directory called <code>mobile</code>, in the main project directory, to hold all our mobile examples:
 
     mkdir mobile
