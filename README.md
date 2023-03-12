@@ -30,7 +30,7 @@ OK, let's switch over for some hands-on experimentation with starting sessions. 
     mkdir mobile
     cd mobile
 
-And now I'm in that directory as well. In my editor, I'm going to make a new file called <code>sessions_ios.py</code> inside the <code>mobile</code> directory. The first thing we want to do is import the Appium client so we can use it. This is similar but slightly different than importing the Selenium client. In Selenium, we did from <code>selenium import webdriver</code>, but now we are going to do:
+And now I'm in that directory as well. In my editor, I'm going to make a new file called [<code>sessions_ios.py</code>](https://github.com/lana-20/configure-launch-mobile-sessions/blob/main/sessions_ios.py) inside the <code>mobile</code> directory. The first thing we want to do is import the Appium client so we can use it. This is similar but slightly different than importing the Selenium client. In Selenium, we did from <code>selenium import webdriver</code>, but now we are going to do:
 
     from appium import webdriver
 
@@ -66,7 +66,43 @@ This isn't strictly speaking necessary, but I like to put all data strings like 
         'app': APP,
     }
 
+I'm including all 5 capabilities we talked about needing before. Setting <code>platformName</code> to <code>iOS</code>, <code>platformVersion</code> to <code>16.2</code> (which is the latest version I have while recording this), setting the <code>deviceName</code> to <code>iPhone 14 Pro</code>, and then using the appropriate <code>automationName</code> and <code>app</code> capabilities. For <code>app</code> we just set the value to our <code>APP</code> variable, which is handy.
 
+One note before we go any further. Depending on when you're reading this, the version of Xcode you downloaded might not have come with iOS 16.2. So you have two options for how to fix this. The first option is to go into Xcode's preferences and download the iOS 16.2 SDK. The second option is to adjust this script to use a version of the iOS SDK which you do have downloaded. Which way you go is up to you. But if you run this script with a version you don't have, you'll get an error. Happily, if you read the Appium logs when the error occurs, the Appium logs will also show you which iOS SDK version is available, so you can make sure to use that one.
 
+Once we have our capabilities defined, all that's left is to start the session! At this point, it's exactly like starting a browser session, except we're going to be sure to use <code>webdriver.Remote</code> rather than one of the built in browser driver classes.
 
+        driver = webdriver.Remote(
+            command_executor=APPIUM,
+            desired_capabilities=CAPS
+        )
+        driver.quit()
 
+Again, all we're doing is stopping and starting a session, so this is pretty short. OK, this script is written, so let's try and run it! I've got my Appium server running, and I've got the script ready, so I'll head to my terminal and run it from the mobile directory with the command <code>python sessions_ios.py</code>, or <code>python3 sessions_ios.py</code> on macOS. If you already have a test runner, like PyTest or UnitTest configured, you can you the runner option to execute.
+
+Once I kick this off, the first thing I'll see is that the Appium server logs have started to go wild. These logs are describing everything Appium or the XCUITest driver are doing in order to handle the new session request. I'm also noticing that an iOS simulator is starting. If you didn't already have a simulator open with that happened to be an iPhone 14 Pro sim, then a new one will pop up (and you can feel free to close any of the other ones). The simulator takes a little while to boot.
+
+The next thing you might notice is a lot of nothing. It may look as though the simulator sits and does nothing for a long time. And if you look at the Appium log, you might see a bunch of lines that keep repeating for what feels like a long time. The reason for this is that the first time you run the XCUITest driver, it needs to build some of its internal components in order to handle the automation session. Depending on your machine, this can take several minutes to complete. So just sit tight. For future sessions, the existing build will be used, and the existing simulator will be used, so they'll start in seconds rather than minutes.
+
+But eventually, if all goes well, and if you're keeping an eye on the simulator you should see The App pop up and then go away. And if all goes well, as you examine the output of your python command, you should see nothing. That means we successfully started a session on iOS! If you got some other kind of error, first try reading the error message, and then try looking at the Appium logs, scrolling back until you see a message that might be helpful. There is often relatively specific instruction in the Appium logs to help deal with fixable errors.
+
+So that's it for iOS. Now let's make sure we can start an Android session. So what I'm going to do for this is head back to my code editor, and then copy all of the sessions_ios.py file. I'm now going to create a new file called sessions_android.py, and paste in the contents, so we're not starting from scratch. What do we need to adjust here in order to make our session run on Android? The first thing is that we need to modify our APP location. We're not dealing with an iOS app anymore, so we should change the filename to TheApp.apk:
+
+APP = path.join(CUR_DIR, 'TheApp.apk')
+And then, of course, we should update our capabilities to refer to all the Android-specific stuff we need:
+
+CAPS = {
+    'platformName': 'Android',
+    'platformVersion': '10.0',
+    'deviceName': 'Android Emulator',
+    'automationName': 'UiAutomator2',
+    'app': APP,
+}
+Here I'm updating the platform to 'Android', the version to '10.0', the deviceName to 'Android Emulator', and the automationName to 'UiAutomator2'. The same thoughts about platformVersion apply here as for iOS. If you're using an emulator or device running a different version of Android, change this capability to match suit. And if you run into problems with that, I'll tell you a little secret. On Android, it doesn't actually matter if you don't include a platformVersion. If you don't include one, Appium will just happily use the first connected device. So as long as you make sure that you just have one device connected, namely your emulator, then you can safely omit this capability for Android.
+
+The rest of the script we can leave the same, because it's just starting and stopping the session. So, let's put this to the test! I still have my Appium server running, so that's good. And I double-checked that my Android virtual device or emulator is also running, so we should be good to go. Now to the terminal so we can run this script:
+
+python sessions_android.py
+And off we go! Similar to iOS, the first time you run a session, it can take a little while for the driver to build anything it needs to. But eventually we will see our app under test pop up and then go away. This means everything worked, so long as we don't get any error output from our Python script. And indeed, it looks like all is well here.
+
+So this is how we start and stop sessions on iOS and Android platforms using Appium! Starting sessions on HeadSpin is a little different because we have to include some more information about which devices specifically to use, but we'll get to that when it comes time for our first mobile challenge.
