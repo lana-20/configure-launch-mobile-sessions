@@ -54,28 +54,30 @@ Now let's cover the capabilities required to start any Appium session!
 
 With the combination of these five capabilities, Appium will know how to start a session for you.
 
-OK, let's switch over for some hands-on experimentation with starting sessions. In my terminal, in our code project directory, I'm going to create a new directory called <code>mobile</code>, in the main project directory, to hold all our mobile examples:
+Let's switch over for some hands-on experimentation with starting sessions. In my terminal, in our code project directory, I'm going to create a new directory called <code>mobile</code>, in the main project directory, to hold all our mobile examples:
 
     mkdir mobile
     cd mobile
 
-And now I'm in that directory as well. In my editor, I'm going to make a new file called [<code>sessions_ios.py</code>](https://github.com/lana-20/configure-launch-mobile-sessions/blob/main/sessions_ios.py) inside the <code>mobile</code> directory. The first thing we want to do is import the Appium client so we can use it. This is similar but slightly different than importing the Selenium client. In Selenium, we did from <code>selenium import webdriver</code>, but now we are going to do:
+And now I'm in that directory as well. In my editor, I'm going to make a new file called [<code>sessions_ios.py</code>](https://github.com/lana-20/configure-launch-mobile-sessions/blob/main/sessions_ios.py) inside the <code>mobile</code> directory. Our first session is going to be run on an iOS simulator. So if you're running on Windows and don't have access to iOS simulators, then you need to sit this one out but pay attenstion because a lot of this will be relevant to Android as well. 
+
+The first thing we want to do is import the Appium client so we can use it. This is similar but slightly different than importing the Selenium client. In Selenium, we wrote from <code>selenium import webdriver</code>, but now we are going to do:
 
     from appium import webdriver
 
-This ensures we're using a client that has all of the Appium command extensions we might need to use. Now, we need to figure out how to get the absolute path to the app we want to test. I'm going to start an iOS session in this file, so I need to somehow find the iOS version of The App. I could just create a string variable holding the path to that downloaded file, if I know where it is. But it's a bit more convenient to locate the app close by and refer to it in terms relative to my project. So I'm going to copy both the apps (iOS and Android) into this <code>mobile</code> directory. And now I need to teach my script where this directory is! To do that, we should first import a module called <code>path</code> from Python's <code>os</code> library:
+This ensures we're using a client that has all of the Appium command extensions we might need to use. Now, we need to figure out how to get the absolute path to the app we want to test. I'm going to start an iOS session in this file, so I need to somehow find the iOS version of The App. I could just create a string variable holding the path to that downloaded file, if I know where it is. But it's a bit more convenient to locate the app close by and refer to it in terms relative to my project. So I'm going to copy both the apps (iOS and Android) into this <code>mobile</code> directory. And now I need to teach my script where this directory is. To do that, we should first import a module called <code>path</code> from Python's <code>os</code> library:
 
     from os import path
 
     CUR_DIR = path.dirname(path.abspath(__file__))
 
-With it, I can create a variable designed to hold the absolute path to the current directory. I use a combination of <code>path.dirname</code> and <code>path.abspath</code> for this, as well as the magic variable <code>__file__</code> which always refers to the file where it is encountered.
+With it, I can create a variable designed to hold the absolute path to the current directory, the directory from which we are going to run this code from. I use a combination of <code>path.dirname</code> and <code>path.abspath</code> for this, as well as the magic variable <code>__file__</code> which always refers to the file where it is encountered. The current directory is obtained partially by using the <code>dirname</code> method on the <code>path</code> library. This will give us the directory name of something that we pass into it. If we pass a file, it will give the name of the directory containing that file. Inside this method, we're going to use another method on the <code>path</code> library, called <code>path.abspath</code>. This is short for *absolute path*, and it will give us the full path on our system to the name of the file that we pass in. Here, we pass in the magic variable <code>__file__</code>. In this case, <code>__file__</code> will refer to <code>sessions_ios.py</code. It's just an easy way of saying, **what file are we in?** and **what is the absolute path to that file?**, and **what is the directory that contains that file?**. We know that as the <code>CUR_DIR</code>. And, because we put our mobile apps into this directory, we'll be able to use this <code>CUR_DIR</code> variable to find the path to those apps as well.
 
 Now, I can use another path function called join to <code>join</code> the path of the current directory to the filename of my iOS app:
 
     APP = path.join(CUR_DIR, 'TheApp.app.zip')
 
-The end result of this will be that the absolute path of our app file is in this <code>APP</code> variable. Notice that I'm using all caps for these variables. It's not necessary to do this and it has no effect on the Python code whether we use all caps or not. But it's a sort of convention to define constant values that will be used globally throughout a script with all caps. It helps to distinguish them from variables that we might define and discard along the way. The next thing that's convenient to define up top is the location of the Appium server we're going to use. And that makes now a great opportunity to start that Appium server. So I'm going to open up a new terminal window, and start Appium there:
+The end result of this will be that the absolute path of our app file is in this <code>APP</code> variable. Notice that I'm using all caps for these variables. It's not necessary to do this and it has no effect on the Python code whether we use all caps or not. But it's a sort of convention to define constant values that will be used globally throughout a script with all caps and never change. It helps to distinguish them from variables that we might define and discard along the way. The next thing that's convenient to define up top is the location of the Appium server we're going to use. And that makes now a great opportunity to start that Appium server. So I'm going to open up a new terminal window, and start Appium there:
 
     appium
 
