@@ -85,13 +85,16 @@ Now, I can use another path function called join to <code>join</code> the path o
 
     APP = path.join(CUR_DIR, 'TheApp.app.zip')
 
-The end result of this will be that the absolute path of our app file is in this <code>APP</code> variable. Notice that I'm using all caps for these variables. It's not necessary to do this and it has no effect on the Python code whether we use all caps or not. But it's a sort of convention to define constant values that will be used globally throughout a script and never change with all caps. It helps to distinguish them from variables that we might define and discard along the way. The next thing that's convenient to define up top is the location of the Appium server we're going to use. And that makes now a great opportunity to start that Appium server. So I'm going to open up a new terminal window, and start Appium there:
+The end result of this will be that the absolute path of our app file is in this <code>APP</code> variable. Notice that I'm using all caps for these variables. It's not necessary to do this and it has no effect on the Python code whether we use all caps or not. But it's a sort of convention to define constant values that will be used globally throughout a script and never change with all caps. It helps to distinguish them from variables that we might define and discard along the way. The next thing that's convenient to define up top is the location of the Appium server we're going to use. And by location I mean the location on the network where it's listening for requests. And that makes now a great opportunity to start that Appium server. So I'm going to open up a new terminal window, and start Appium there:
 
     appium
 
-It's as simple as running this <code>appium</code> command, and I'll see Appium's startup info to know that it's listening. I'll also pay attention to the port that Appium is running on, which is the default port of 4723. I can change this using a command line flag if I want to for some reason, but I'll leave it as is for now. Looking at Appium's startup printout, I also notice that I have the XCUITest and UiAutomator2 drivers installed, and Appium even tells me what <code>automationName</code> capabilities to use to target them! That's good to know too. 
+It's as simple as running this <code>appium</code> command, and I'll see Appium's startup info to know that it's listening. I'll also pay attention to the port that Appium is running on, which is the default port of *4723*. I can change this using a command line flag if I want to for some reason, but I'll leave it as is for now. Looking at Appium's startup printout, I also notice that I have the XCUITest and UiAutomator2 drivers installed, and Appium even tells me what <code>automationName</code> capabilities to use to target them! That's good to know too. 
+
+<img width="800" src="https://user-images.githubusercontent.com/70295997/224583316-45f6110b-842d-4825-9d12-966765bb5dcb.png">
 
 Now that I know Appium is running on my localhost interface at port 4723, I can encode this knowledge in a variable:
+
 
     APPIUM = 'http://localhost:4723'
 
