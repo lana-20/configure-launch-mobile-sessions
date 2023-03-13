@@ -85,7 +85,7 @@ Now, I can use another path function called join to <code>join</code> the path o
 
     APP = path.join(CUR_DIR, 'TheApp.app.zip')
 
-The end result of this will be that the absolute path of our app file is in this <code>APP</code> variable. Notice that I'm using all caps for these variables. It's not necessary to do this and it has no effect on the Python code whether we use all caps or not. But it's a sort of convention to define constant values that will be used globally throughout a script with all caps and never change. It helps to distinguish them from variables that we might define and discard along the way. The next thing that's convenient to define up top is the location of the Appium server we're going to use. And that makes now a great opportunity to start that Appium server. So I'm going to open up a new terminal window, and start Appium there:
+The end result of this will be that the absolute path of our app file is in this <code>APP</code> variable. Notice that I'm using all caps for these variables. It's not necessary to do this and it has no effect on the Python code whether we use all caps or not. But it's a sort of convention to define constant values that will be used globally throughout a script and never change with all caps. It helps to distinguish them from variables that we might define and discard along the way. The next thing that's convenient to define up top is the location of the Appium server we're going to use. And that makes now a great opportunity to start that Appium server. So I'm going to open up a new terminal window, and start Appium there:
 
     appium
 
